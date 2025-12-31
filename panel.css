@@ -227,3 +227,22 @@ ul.reading-list {
   display: inline-block;
 }
 */
+/* Unread Button (Checkmark) */
+.unread-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1e8e3e; /* Green to indicate "It is read" (checkmark) */
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+  margin-right: 4px;
+}
+
+.unread-btn:hover {
+  background-color: rgba(30, 142, 62, 0.1); /* Light green hover */
+  color: #188038;
+}

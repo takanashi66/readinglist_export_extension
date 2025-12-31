@@ -233,6 +233,45 @@ function createListItem(item) {
         }
     });
 
+    // Feature: Mark as Unread Button (only for read items)
+    if (item.hasBeenRead) {
+        const unreadBtn = document.createElement("button");
+        unreadBtn.className = "unread-btn";
+        unreadBtn.title = "Mark as Unread";
+        // SVG Icon for "Mark as Unread" (e.g., an outgoing mail or undo icon)
+        unreadBtn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#5f6368"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>';
+
+        unreadBtn.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            try {
+                // Optimistic UI update
+                li.classList.remove("is-read");
+                unreadBtn.remove(); // Remove the button itself since it's now unread
+                item.hasBeenRead = false;
+
+                // Backend Sync: Remove and Re-add
+                await chrome.readingList.removeEntry({ url: item.url });
+                await chrome.readingList.addEntry({
+                    title: item.title,
+                    url: item.url,
+                    hasBeenRead: false,
+                });
+
+                // Note: Re-adding changes creationTime, so order might change on reload.
+                // For now, we keep it in place.
+            } catch (error) {
+                console.error("Failed to mark as unread:", error);
+                // Revert UI on failure
+                li.classList.add("is-read");
+                alert("Failed to mark as unread: " + error.message);
+            }
+        });
+        actionsDiv.appendChild(unreadBtn);
+    }
+
     actionsDiv.appendChild(deleteBtn);
 
     li.appendChild(iconImg);

@@ -10,7 +10,8 @@
         "tabs",
         "favicon",
         "storage",
-        "scripting"
+        "scripting",
+        "contextMenus"
     ],
     "side_panel": {
         "default_path": "panel.html"

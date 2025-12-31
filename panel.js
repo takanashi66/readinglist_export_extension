@@ -127,6 +127,13 @@ function setupEventListeners() {
             }
         });
     }
+    // 4. Listen for background updates (e.g. shortcut key)
+    chrome.runtime.onMessage.addListener((message) => {
+        if (message.type === "READING_LIST_UPDATED") {
+            console.log("Received update message, reloading list...");
+            loadReadingList();
+        }
+    });
 }
 
 function createListItem(item) {

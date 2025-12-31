@@ -9,7 +9,8 @@
         "activeTab",
         "tabs",
         "favicon",
-        "storage"
+        "storage",
+        "scripting"
     ],
     "side_panel": {
         "default_path": "panel.html"
@@ -32,6 +33,13 @@
                 "mac": "MacCtrl+Command+W"
             },
             "description": "Toggle Reading List Side Panel"
+        },
+        "add_to_reading_list": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+L",
+                "mac": "MacCtrl+Shift+L"
+            },
+            "description": "Add current tab to Reading List"
         }
     }
 }

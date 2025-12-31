@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Reading List Side Panel",
+    "version": "1.0",
+    "description": "A side panel extension to manage Chrome Reading List items.",
+    "permissions": [
+        "readingList",
+        "sidePanel",
+        "activeTab",
+        "tabs",
+        "favicon"
+    ],
+    "side_panel": {
+        "default_path": "panel.html"
+    },
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "action": {
+        "default_title": "Open Reading List"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }
+}

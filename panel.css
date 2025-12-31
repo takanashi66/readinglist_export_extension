@@ -14,21 +14,58 @@ h1 {
   color: #202124;
 }
 
+/* --- Sticky Header & Controls --- */
 .search-container {
-  padding: 0 10px 10px 10px;
+  padding: 8px 12px;
   position: sticky;
   top: 0;
   background-color: #f1f3f4;
   z-index: 10;
+  display: flex; /* Horizontal layout */
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow separator */
 }
 
 #search-input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
+  flex-grow: 1; /* Take up remaining space */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px; /* More rounded */
   box-sizing: border-box;
   font-size: 14px;
+  background-color: #fff;
+  height: 36px;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+#search-input:focus {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6368;
+  transition: background-color 0.2s;
+  height: 36px;
+  width: 36px;
+}
+
+.icon-btn:hover {
+  background-color: rgba(0,0,0,0.08);
+  color: #202124;
+}
+
+.icon-btn svg {
+  fill: currentColor;
 }
 
   font-size: 14px;
@@ -45,40 +82,7 @@ ul.reading-list {
   padding: 0 8px !important;
 }
 
-.footer {
-  padding: 10px;
-  background-color: #fff;
-  border-top: 1px solid #dadce0;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.footer-btn {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #dadce0;
-  background-color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  color: #3c4043;
-  transition: background-color 0.2s;
-}
-
-.footer-btn:hover {
-  background-color: #f1f3f4;
-}
-
-#add-btn {
-  background-color: #1a73e8;
-  color: white;
-  border: 1px solid #1a73e8;
-}
-
-#add-btn:hover {
-  background-color: #1557b0;
-}
+/* Footer removed */
 
 /* --- Reading List Items --- */
 .reading-list-item {
@@ -185,9 +189,10 @@ ul.reading-list {
 }
 
 /* Read State */
+/* Read State */
 .reading-list-item.is-read {
-  background-color: #f1f3f4; /* Explicitly gray background */
-  opacity: 1; /* Reset opacity to avoid washing out the checkmark, handle dimming via text color */
+  background-color: #f1f3f4; /* Keep the distinct background for now, or revert to white if only text changes requested? User said "text color gray", didn't mention bg. Spec says: ".is-read class items... text color #999... font thinner". I will keep bg for clarity but focus on text. */
+  opacity: 1; 
 }
 
 /* Grayscale icon */
@@ -196,17 +201,29 @@ ul.reading-list {
   opacity: 0.5;
 }
 
-/* Dim text */
+/* Dim text and thinner font */
 .reading-list-item.is-read .item-title,
 .reading-list-item.is-read .item-meta {
-  color: #70757a;
+  color: #999999; /* Requested #999 */
 }
 
-/* Green Checkmark Badge */
+.reading-list-item.is-read .item-title {
+  font-weight: 400; /* Thinner than the default 700 */
+}
+
+/* Green Checkmark Badge - Commenting out to strictly follow "Gray text, thinner font" request simplicity, 
+   or maybe user implies *just* that changes. 
+   I will KEEP it for now as "marking as read" usually needs an indicator, but the user spec was specific.
+   Let's keep it but make it gray so it doesn't clash? Or just remove it if the prompt implies a specific design.
+   "文字色をグレー (#999) にし、タイトルのフォントを細くするスタイル" -> This sounds like the *only* style changes?
+   I will comment it out to be safe.
+*/
+/*
 .reading-list-item.is-read .item-title::before {
   content: "✓";
-  color: #1e8e3e; /* Google Green */
+  color: #1e8e3e; 
   margin-right: 6px;
   font-weight: 900;
   display: inline-block;
 }
+*/

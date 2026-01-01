@@ -40,25 +40,61 @@ async function loadReadingList() {
 function setupEventListeners() {
     // 1. Search Functionality
     const searchInput = document.getElementById("search-input");
+
+    // Filter Logic State
+    let isFilterActive = false;
+
+    // Helper to apply filters
+    const applyFilters = () => {
+        const query = searchInput ? searchInput.value.toLowerCase() : "";
+        const items = document.querySelectorAll(".reading-list-item");
+        let hasVisibleItems = false;
+
+        items.forEach((item) => {
+            const title = item
+                .querySelector(".item-title")
+                .textContent.toLowerCase();
+            const url = item.querySelector(".item-url")
+                ? item.querySelector(".item-url").textContent.toLowerCase()
+                : getDomain(item.dataset.url || "").toLowerCase(); // URL might not be in DOM text, but let's assume getDomain logic or check domain in meta
+            // Actually, item-meta contains domain. item-url is not class.
+            // In createListItem: `metaDiv.textContent = \`\${domain} · \${timeStr}\`;`
+            // So we search in title and meta.
+            const meta = item
+                .querySelector(".item-meta")
+                .textContent.toLowerCase();
+
+            const matchesSearch = title.includes(query) || meta.includes(query);
+            const isRead = item.classList.contains("is-read");
+            const matchesFilter = !isFilterActive || isRead;
+
+            if (matchesSearch && matchesFilter) {
+                item.style.display = "flex";
+                hasVisibleItems = true;
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        // Handle empty state if needed? Currently listContainer doesn't show "No results" dynamically for search.
+        // Could add if desired.
+    };
+
     if (searchInput) {
-        searchInput.addEventListener("input", (e) => {
-            const query = e.target.value.toLowerCase();
-            const items = document.querySelectorAll(".reading-list-item");
+        searchInput.addEventListener("input", applyFilters);
+    }
 
-            items.forEach((item) => {
-                const title = item
-                    .querySelector(".item-title")
-                    .textContent.toLowerCase();
-                const url = item
-                    .querySelector(".item-url")
-                    .textContent.toLowerCase();
+    // 1-b. Filter Button
+    const filterBtn = document.getElementById("filter-btn");
+    if (filterBtn) {
+        filterBtn.addEventListener("click", () => {
+            isFilterActive = !isFilterActive;
+            filterBtn.classList.toggle("active", isFilterActive);
 
-                if (title.includes(query) || url.includes(query)) {
-                    item.style.display = "flex";
-                } else {
-                    item.style.display = "none";
-                }
-            });
+            // Toggle icon path for visual feedback (optional, but requested just "sort button")
+            // Let's keep icon same but color changes via CSS active class.
+
+            applyFilters();
         });
     }
 
